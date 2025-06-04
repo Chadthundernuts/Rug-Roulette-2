@@ -1,0 +1,114 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rug Roulette 2</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #111;
+      color: white;
+      padding: 50px;
+    }
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 20px;
+    }
+    .contract {
+      margin-bottom: 30px;
+      font-size: 1.2em;
+    }
+    .wheel-container {
+      position: relative;
+      width: 300px;
+      height: 300px;
+      margin: 0 auto;
+    }
+    #arrow {
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 15px solid transparent;
+      border-right: 15px solid transparent;
+      border-top: 30px solid white;
+    }
+    #wheel {
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      border: 10px solid #444;
+      background: conic-gradient(green 0% 90%, red 90% 100%);
+      transition: transform 2s ease-in-out;
+    }
+    #result {
+      font-size: 2em;
+      margin-top: 30px;
+    }
+    #timer {
+      font-size: 1.5em;
+      margin-top: 20px;
+      color: #ccc;
+    }
+  </style>
+</head>
+<body>
+  <h1>Rug Roulette 2</h1>
+  <div class="contract">
+    Contract Address: <span id="contractAddress">[Insert CA Here]</span>
+  </div>
+  <div class="wheel-container">
+    <div id="arrow"></div>
+    <div id="wheel"></div>
+  </div>
+  <div id="result"></div>
+  <div id="timer"></div>
+
+  <script>
+    const resultEl = document.getElementById("result");
+    const wheelEl = document.getElementById("wheel");
+    const timerEl = document.getElementById("timer");
+
+    let rotation = 0;
+
+    function spinWheel() {
+      const roll = Math.random();
+      rotation += 1440 + Math.floor(Math.random() * 360); // multiple spins
+      wheelEl.style.transform = `rotate(${rotation}deg)`;
+
+      setTimeout(() => {
+        if (roll <= 0.1) {
+          resultEl.textContent = "Dev Sell 🚨";
+          resultEl.style.color = "red";
+        } else {
+          resultEl.textContent = "Coin Keeps Mooning 🚀";
+          resultEl.style.color = "green";
+        }
+      }, 2000); // wait for spin animation
+    }
+
+    function startTimer(duration) {
+      let timer = duration;
+      const interval = setInterval(() => {
+        const minutes = Math.floor(timer / 60);
+        const seconds = timer % 60;
+        timerEl.textContent = `Next spin in: ${minutes}:${seconds.toString().padStart(2, '0')}`;
+
+        if (--timer < 0) {
+          spinWheel();
+          timer = duration;
+        }
+      }, 1000);
+    }
+
+    // Initial spin
+    spinWheel();
+    startTimer(300); // 5 minutes in seconds
+  </script>
+</body>
+</html>
